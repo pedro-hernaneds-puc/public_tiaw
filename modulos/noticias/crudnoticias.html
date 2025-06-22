@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Noticias - Synapso</title>
+    <link rel="stylesheet" href="/assets/css/news.css">
+      <link rel="stylesheet" href="/assets/css/searchbar.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/e9afc20198.js" crossorigin="anonymous"></script>
+</head>
+<body onload="init()">
+    <header id="main-header"></header>
+
+    <aside id="crudNews">
+        <button class="voltarBTN" onclick="history.back()">Voltar</button>
+    </aside>
+
+    <div class="container">
+        <div class="row">
+            <div id="msg" class="col-sm-10 offset-sm-1"></div>
+        </div>
+
+        <form id="form-Noticia">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label for="inputId">Id</label>
+                    <input type="text" class="form-control" id="inputId" placeholder="ID" disabled>
+                </div>
+                <div class="col-sm-8">
+                    <label for="inputTitulo">Título</label>
+                    <input type="text" class="form-control" id="inputTitulo" required placeholder="Informe o título">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-5">
+                    <label for="inputFonte">Fonte</label>
+                    <input type="text" class="form-control" id="inputFonte" required placeholder="Fonte da Notícia">
+                </div>
+                <div class="col-sm-7">
+                    <label for="inputAutor">Autor</label>
+                    <input type="text" class="form-control" id="inputAutor" required placeholder="Informe o autor">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label for="inputData">Data</label>
+                    <input type="date" class="form-control" id="inputData" required placeholder="Informe a data da notícia">
+                </div>
+                <div class="col-sm-6">
+                    <label for="inputCategoria">Categoria</label>
+                    <select class="form-control" id="inputCategoria" required>
+                        <option value="">Selecione...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row"> 
+                <div class="col-sm-12">
+                    <label for="inputTexto">Texto</label>
+                    <textarea class="form-control" id="inputTexto" required placeholder="Texto"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12 mt-2">
+                    <input type="button" class="btn btn-success" id="btnInsert" value="Inserir">
+                    <input type="button" class="btn btn-warning" id="btnUpdate" value="Alterar">
+                    <input type="button" class="btn btn-danger" id="btnDelete" value="Excluir">
+                    <input type="button" class="btn btn-secondary" id="btnClear" value="Limpar Form">
+                    <!-- <a href="search.html"><input type="button" class="btn btn-warning" value="Pesquisar Noticias"></a> -->
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="grid-noticias" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Data</th>
+                            <th>Fonte</th>
+                            <th>Categoria</th>
+                            <th>Texto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-noticias"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/crudnews.js"></script>
+    <script>
+        // Carrega categorias no select
+        function loadCategoriasSelect() {
+            fetch('http://localhost:3000/categorias')
+                .then(res => res.json())
+                .then(categorias => {
+                    const select = document.getElementById('inputCategoria');
+                    select.innerHTML = '<option value="">Selecione...</option>';
+                    categorias.forEach(cat => {
+                        select.innerHTML += `<option value="${cat.id}">${cat.nome}</option>`;
+                    });
+                });
+        }
+
+        // Exibe as notícias na tabela
+        function exibeNoticias() {
+            const tableNoticias = document.getElementById("table-noticias");
+            tableNoticias.innerHTML = "";
+            readNoticia(dados => {
+                for (let i = 0; i < dados.length; i++) {
+                    let Noticia = dados[i];
+                    tableNoticias.innerHTML += `<tr>
+                        <td>${Noticia.id}</td>
+                        <td>${Noticia.titulo}</td>
+                        <td>${Noticia.autor}</td>
+                        <td>${Noticia.data ? Noticia.data.split('T')[0] : ''}</td>
+                        <td>${Noticia.fonte}</td>
+                        <td>${Noticia.categoria_id}</td>
+                        <td>${Noticia.texto || ''}</td>
+                    </tr>`;
+                }
+            });
+        }
+
+        function init() {
+            loadCategoriasSelect();
+
+            const formNoticia = document.getElementById("form-Noticia");
+            const btnInsert = document.getElementById("btnInsert");
+            const btnUpdate = document.getElementById("btnUpdate");
+            const btnDelete = document.getElementById("btnDelete");
+            const btnClear = document.getElementById("btnClear");
+            const tableNoticias = document.getElementById("table-noticias");
+
+            btnInsert.onclick = function () {
+                if (!formNoticia.checkValidity()) {
+                    displayMessage("Preencha o formulário corretamente.");
+                    return;
+                }
+                let noticia = {
+                    titulo: document.getElementById('inputTitulo').value,
+                    fonte: document.getElementById('inputFonte').value,
+                    autor: document.getElementById('inputAutor').value,
+                    data: document.getElementById('inputData').value ? new Date(document.getElementById('inputData').value).toISOString() : "",
+                    categoria_id: Number(document.getElementById('inputCategoria').value),
+                    texto: document.getElementById('inputTexto').value
+                };
+                createNoticia(noticia, exibeNoticias);
+                formNoticia.reset();
+            };
+
+            btnUpdate.onclick = function () {
+                let id = document.getElementById("inputId").value;
+                if (!id) {
+                    displayMessage("Selecione antes uma Notícia para ser alterada.");
+                    return;
+                }
+                let noticia = {
+                    titulo: document.getElementById('inputTitulo').value,
+                    fonte: document.getElementById('inputFonte').value,
+                    autor: document.getElementById('inputAutor').value,
+                    data: document.getElementById('inputData').value ? new Date(document.getElementById('inputData').value).toISOString() : "",
+                    categoria_id: Number(document.getElementById('inputCategoria').value),
+                    texto: document.getElementById('inputTexto').value
+                };
+                updateNoticia(id, noticia, exibeNoticias);
+                formNoticia.reset();
+            };
+
+            btnDelete.onclick = function () {
+                let id = document.getElementById('inputId').value;
+                if (!id) {
+                    displayMessage("Selecione uma Notícia a ser excluída.");
+                    return;
+                }
+                deleteNoticia(id, exibeNoticias);
+                formNoticia.reset();
+            };
+
+            btnClear.onclick = function () {
+                formNoticia.reset();
+            };
+
+            // Preenche o formulário ao clicar em uma linha da tabela
+            document.getElementById("grid-noticias").onclick = function (e) {
+                if (e.target.tagName === "TD") {
+                    let linha = e.target.parentNode;
+                    let colunas = linha.querySelectorAll("td");
+                    document.getElementById('inputId').value = colunas[0].innerText;
+                    document.getElementById('inputTitulo').value = colunas[1].innerText;
+                    document.getElementById('inputAutor').value = colunas[2].innerText;
+                    document.getElementById('inputData').value = colunas[3].innerText;
+                    document.getElementById('inputFonte').value = colunas[4].innerText;
+                    document.getElementById('inputCategoria').value = colunas[5].innerText;
+                    document.getElementById('inputTexto').value = colunas[6].innerText;
+                }
+            };
+
+            exibeNoticias();
+        }
+    </script>
+    <footer id="main-footer"></footer>
+    <script src="/assets/js/searchbar.js"></script>
+     <script src="/assets/js/login.js"></script>
+    <script src="https://kit.fontawesome.com/e9afc20198.js" crossorigin="anonymous"></script>
+</body>
+</html>

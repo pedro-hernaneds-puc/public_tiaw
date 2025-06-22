@@ -1,0 +1,211 @@
+/* estilização da searchbar, pois fica no header, independente da página de pesquisa*/
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #555;
+  font-family: sans-serif;
+  color: white;
+  overflow-x: hidden; 
+}
+main{ flex-grow: 1; }
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  background: navy;
+  color: white;
+  padding: 0.7rem 0.5em;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  background-color: #333;
+  color: white;
+  padding: 0.7rem 0;
+  font-size: 1rem;
+}
+
+.footer-content {
+  max-width: 700px;
+  margin: 0 auto;
+  opacity: 0.85;
+}
+
+/* Barra de pesquisa global */
+.search-bar-container {
+  position: relative;
+  margin: 1.2rem auto 1.5rem auto;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+#search {
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 0.7rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: none;
+  background: white;
+  color: #222;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+  transition: box-shadow 0.2s;
+  outline: none;
+}
+
+#search:focus {
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.15);
+}
+
+/* Botão de pesquisa */
+.search-btn {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: blue;
+  font-size: 1.3em;
+  cursor: pointer;
+  z-index: 31;
+  transition: color 0.2s;
+}
+.search-btn:hover {
+  color: #1565c0;
+}
+
+/* Sugestões de busca */
+.search-suggestions {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: white;
+  color: #222;
+  list-style: none;
+  border: 1px solid #e3f2fd;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.10);
+  z-index: 30;
+  display: none;
+  width: 100%;
+  min-width: 220px;
+  margin: 0;
+}
+
+.search-suggestions li {
+  padding: 0.7em 1em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.search-suggestions li:first-child{ border-radius: 10px 10px 0 0; }
+.search-suggestions li:last-child { border-radius: 0 0 10px 10px; }
+
+.search-suggestions li:hover,
+.search-suggestions li.active {
+  background: #e3f2fd;
+  color: blue;
+}
+.pag-ini{
+    padding:2em;
+    text-align:center;
+    font-size:1.5em;
+    color:white;
+}
+/* Ícone de usuário/logout */
+/* Ícone de usuário */
+.user-icon {
+  position: relative;
+  margin-left: auto;
+  margin-right: 0.7rem;
+  cursor: pointer;
+  font-size: 1.6em;
+  color: white;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.user-icon:hover {
+  color: #90caf9;
+}
+
+.login-popup {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background-color: white;
+  color: #222;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  display: none;
+  width: 240px;
+}
+
+.login-popup input {
+  width: 100%;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.login-popup button {
+  width: 100%;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  background-color: navy;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-popup button:hover {
+  background-color: #1565c0;
+}
+
+/* Ajustes para responsividade do popup */
+@media (max-width: 500px) {
+  .login-popup {
+    right: -20px;
+    width: 90vw;
+  }
+}
+
+/* Mantém estilização existente da barra de pesquisa e header */
+/* Navegação links no header */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  margin-left: 1.5rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #90caf9;
+}

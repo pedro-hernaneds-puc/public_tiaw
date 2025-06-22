@@ -1,0 +1,196 @@
+:root{
+    --cor-pri: dodgerblue;
+    --cor-pri-dark: blue;
+    --cor-sec: lightgreen;
+    --cor-sec-dark: green;
+    --cor-terc: indigo;
+    --cor-terc-light: slateblue;
+    --cor-dest: rgb(189, 156, 255); /* roxo claro */
+    --cor-fundo-cinza: rgb(44, 44, 44); /* cinxa escuro */
+    --cor-fundo-transp: rgba(0, 0, 0, 0.2);
+    --cor-fundo-transp-2: rgba(0, 0, 0, 0.5);
+    --cor-text-light: white;
+    --cor-text-dark: black;
+    --cor-borda: indigo;
+    --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* fonte que estou usando pra maioria das coisas */
+    --font-serif: Georgia, 'Times New Roman', Times, serif; /* fonte dos textos no carrossel*/
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { background-color:var(--cor-fundo-cinza);}
+
+#noticias{ 
+    padding-bottom: 50px; 
+    color: var(--cor-text-light);
+    background-color: var(--cor-pri);
+}
+#noticias h1{
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+#carousel-conteiner{
+    width: 75%;
+    padding: 0em;
+    background-color: var(--cor-terc-light);
+    margin: 5px auto;
+    border: solid 3px var(--cor-terc);
+    box-shadow: 0 5px 40px black;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+#carousel-conteiner:hover{
+    transform: scale(1.02);   
+    box-shadow: 0px 15px 40px black;
+}
+.destaque{
+    text-decoration: none;
+    margin: 0px auto;
+}
+.titulo-dest{
+    width: 100%;
+    border: double 3px var(--cor-borda);
+    color: var(--cor-text-light);
+    text-align: center;
+    background-color: var(--cor-fundo-transp);
+    margin: 1px auto;
+    font-size: 1.75em;
+    font-family: var(--font-serif);
+}
+.conteudo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background-color: var(--cor-fundo-transp);
+    border: double 3px var(--cor-borda);
+    margin: 1px auto;
+    padding: 1em;
+}
+
+.cnt-v2 {flex-direction: row-reverse;}
+
+.descr-dest{
+    padding: 10px;
+    color: white;
+    font-size: 1.5em;
+    font-family: var(--font-serif);
+    border: dashed 2px var(--cor-dest);
+}
+.img-dest{
+    text-align: center;
+    width: 30%;
+    border: dashed 2px var(--cor-dest);
+    object-fit: cover;
+    display: block;
+    margin: 0;
+}
+.setas{
+    width: fit-content;
+    justify-self: center;
+    align-self: center;
+}
+.seta-left {transform: matrix(2, 0, 0, 3, -75, 0) !important; }
+.seta-right {transform: matrix(2, 0, 0, 3, 75, 0) !important; }
+
+.indicadores{
+    background: none !important;
+    border: solid 2px white !important;
+    margin: -10px 15px !important;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50%;
+    transition: background-color 0.4s ease-in-out, transform 0.2s ease-in-out !important; 
+    transition-delay: 0.2s !important; /*transição demora um pouquinho pra sair*/
+}
+.indicadores:hover{
+    transition-delay: 0s !important;
+    transform: scale(1.2);}
+.carousel-indicators .active{background-color: white !important;}
+.slider-testes{
+    width: fit-content;
+    padding: 20px;
+    margin: 0 auto;
+    color: var(--cor-text-light);
+    text-align: center;
+    font-size: 2em;
+    background-color: var(--cor-fundo-transp-2);
+}
+.carousel-item {
+  position: relative;
+}
+
+.progress-circle {
+  position: absolute;
+  top: 5px;   
+  right: 10px;   
+  width: 30px;
+  height: 30px;
+  z-index: 10;    
+}
+.progress-circle circle {
+    stroke: white;
+    stroke-dasharray: 100.53;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+    transform: rotate(90deg) scaleX(-1);
+    animation: progress 15s linear forwards;
+}
+@keyframes progress {
+  to {
+    stroke-dashoffset: 100;
+  }
+}
+
+@media screen and (max-width: 1023px) { /*para tablets e dispositivos móveis*/
+    #carousel-conteiner {
+        width: 100%; /* deixa o carrossel preencher toda a tela*/
+        padding: 0; /* tira o padding e margin, para ocupar menos espaço */
+        margin:0;
+    }
+    .destaque{ /* todas modificações para que ocupe menos espaço */
+        width: 100%; 
+        margin: 0 auto;
+        padding: 0;
+    }
+    .titulo-dest{ font-size: 1.75em; }
+    .descr-dest{ font-size: 1.25em; }
+    .conteudo{ padding: 0; }
+    
+    .indicadores{ /* joga os indicadores para baixo do carrossel para não sobrepor nenhum conteúdo*/
+        position: relative;
+        bottom: -50px;
+    }
+    .setas{ /* tira as setas de navegação, o usuário pode deslizar para passar os slides */
+        width: 0;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;   
+    }
+}
+@media screen and (max-width: 600px){
+    .conteudo{ gap: 0px;}
+    .img-dest {width: 30%;}
+    .titulo-dest{ font-size: 1em; }
+    .descr-dest{ font-size: 0.5em; }
+    #noticias h1 { font-size: 2em; }
+    .indicadores{
+        margin: -10px 10px !important;
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+@media screen and (min-width: 1600px){
+    .titulo-dest{ font-size: 2.5em; }
+    .descr-dest{ font-size: 2em; }
+}
+@media screen and (min-width: 2000px){
+    .titulo-dest{ font-size: 3em; }
+    .descr-dest{ font-size: 2.5em; }
+}

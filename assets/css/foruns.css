@@ -1,0 +1,203 @@
+* {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #e9e5db;
+    margin: 0;
+    padding: 10px;
+    gap: 30px;
+    font-size: larger;
+}
+
+main{
+    padding: 10px;
+}
+
+footer, header {
+    background-color: #588157;
+    border-radius: 00px 00px 20px 20px;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 10px 20px;
+}
+
+footer{
+    border-radius: 00px 00px 20px 20px;
+}
+
+header {
+    border-radius: 20px 20px 0 0;
+    margin-bottom: 10px;
+}
+
+aside {
+    background-color: #a3b18a;
+    border-radius: 20px;
+    padding: 20px;
+    min-width: 220px;
+    max-width: 250px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: sticky;
+    top: 20px;
+}
+
+aside h1 {
+    font-weight: lighter;
+    background-color: #588157;
+    border-radius: 15px;
+    text-align: center;
+    padding: 5px 10px;
+    color: white;
+}
+
+.voltarBTN, .categoriaBTN {
+    background-color: #909e75;
+    color: black;
+    border: 1px solid #3a5a40;
+    border-radius: 15px;
+    padding: 5px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.categoriaBTN:hover, .voltarBTN:hover {
+    border-color: #dad7cd;
+    transform: scale(1.05);
+}
+
+.categoriaBTN.ativa {
+    background-color: #588157;
+    color: white;
+    font-weight: bold;
+}
+
+.card-forum {
+    background-color: #dad7cd;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.card-forum:hover {
+    transform: scale(1.02);
+    background-color: #a3b18a;
+}
+
+
+.detalhes-forum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #344e41;
+}
+
+.detalhes-forum span {
+    white-space: nowrap;
+}
+@media (max-width: 991px) {
+    aside {
+        position: relative;
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .voltarBTN, .categoriaBTN {
+        width: 100%;
+    }
+}
+
+/*css da barra de pesquisa*/
+.search-bar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+#search {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px 0 0 6px;
+  outline: none;
+}
+
+.search-btn {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-left: none;
+  background-color: #4a90e2;
+  color: white;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+}
+
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-suggestions li {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.search-suggestions li:last-child {
+  border-bottom: none;
+}
+
+.search-suggestions li:hover,
+.search-suggestions li.active {
+  background-color: #f0f0f0;
+}
+
+.sug-tipo {
+  font-size: 12px;
+  color: #666;
+  margin-left: 8px;
+}
+
+/*
+Paleta de cores:
+
+#dad7cd
+#a3b18a
+#588157
+#3a5a40
+#344e41
+
+*/

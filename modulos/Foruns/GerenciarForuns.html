@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Fóruns</title>
+    <script src="/assets/js/crudForuns.js"></script>
+    <script src="/assets/js/login.js"></script>
+    <link rel="stylesheet" href="/assets/css/searchbar.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/e9afc20198.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<header id="main-header"></header>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Criação de Fórum</h2>
+    <button id="btn_logout" onclick="logoutUser()">Efetuar Logout</button>
+
+    <form id="formForum">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <input id="forumId" type="text" class="form-control" placeholder="Id">
+            </div>
+            <div class="col-md-5">
+                <select id="forumAutor" class="form-select">
+                    <option selected disabled>Autor</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select id="forumCategoria" class="form-select">
+                    <option selected disabled>Categoria</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <input id="forumTitulo" type="text" class="form-control" placeholder="Título">
+            </div>
+            <div class="col-md-4">
+                <input id="forumDataPostagem" type="date" class="form-control">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <input id="forumVisualizacoes" type="number" class="form-control" placeholder="Visualizações">
+            </div>
+            <div class="col-md-4">
+                <input id="forumUltimaInteracao" type="date" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <input id="forumComentarios" type="number" class="form-control" placeholder="Quantidade de comentários" disabled>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col d-flex justify-content-around">
+                <button id="btnInserir" type="button" class="btn btn-secondary">Inserir</button>
+                <button id="btnAlterar" type="button" class="btn btn-secondary">Alterar</button>
+                <button id="btnExcluir" type="button" class="btn btn-secondary">Excluir</button>
+                <button type="reset" class="btn btn-secondary">Limpar Form</button>
+            </div>
+
+        </div>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th><th>Autor</th><th>Categoria</th><th>Título</th><th>Data de Criação</th>
+                <th>Visualizações</th><th>Última Interação</th><th>Comentários</th><th>Ação</th>
+            </tr>
+        </thead>
+        <tbody id="forumTableBody"></tbody>
+    </table>
+</div>
+
+<script>
+    filtroUsuario = "";
+    if (sessionStorage.getItem("usuarioCorrente")) {
+        let userId = JSON.parse(sessionStorage.getItem("usuarioCorrente")).id;
+        filtroUsuario = `?autor_id=${userId}`;
+    }
+    function carregarForuns() {
+        readForum(preencherTabela, filtroUsuario);
+    }
+
+    function preencherTabela(dados) {
+        const tabela = document.getElementById("forumTableBody");
+        tabela.innerHTML = "";
+
+        Promise.all([
+            fetch("/usuarios").then(res => res.json()),
+            fetch("/categorias").then(res => res.json())
+        ]).then(([usuarios, categorias]) => {
+            dados.forEach(forum => {
+                const autor = usuarios.find(u => u.id == forum.autor_id);
+                const categoria = categorias.find(c => c.id == forum.categoria_id);
+
+                const linha = document.createElement("tr");
+                linha.innerHTML = `
+                    <td>${forum.id}</td>
+                    <td>${autor?.nome || "Desconhecido"}</td>
+                    <td>${categoria?.nome || "Sem categoria"}</td>
+                    <td>${forum.titulo}</td>
+                    <td>${formatarData(forum.data_postagem)}</td>
+                    <td>${forum.visualizacoes}</td>
+                    <td>${formatarData(forum.ultima_interacao)}</td>
+                    <td>${forum.quantidade_comentarios}</td>
+                    <td><button class="btn btn-sm btn-primary" onclick='preencherFormulario(${JSON.stringify(forum)})'>Preencher</button></td>
+                `;
+                tabela.appendChild(linha);
+            });
+        });
+    }
+
+    function preencherFormulario(forum) {
+        document.getElementById("forumId").value = forum.id;
+        document.getElementById("forumAutor").value = forum.autor_id;
+        document.getElementById("forumCategoria").value = forum.categoria_id;
+        document.getElementById("forumTitulo").value = forum.titulo;
+        document.getElementById("forumDataPostagem").value = forum.data_postagem?.split("T")[0];
+        document.getElementById("forumVisualizacoes").value = forum.visualizacoes;
+        document.getElementById("forumUltimaInteracao").value = forum.ultima_interacao?.split("T")[0];
+        document.getElementById("forumComentarios").value = forum.quantidade_comentarios;
+    }
+    function carregarSelects() {
+    fetch("/usuarios")
+        .then(res => res.json())
+        .then(usuarios => {
+            const selectAutor = document.getElementById("forumAutor");
+            usuarios.forEach(user => {
+                const opt = document.createElement("option");
+                opt.value = user.id;
+                opt.textContent = user.nome;
+                selectAutor.appendChild(opt);
+            });
+        });
+
+    fetch("/categorias")
+        .then(res => res.json())
+        .then(categorias => {
+            const selectCategoria = document.getElementById("forumCategoria");
+            categorias.forEach(cat => {
+                const opt = document.createElement("option");
+                opt.value = cat.id;
+                opt.textContent = cat.nome;
+                selectCategoria.appendChild(opt);
+            });
+        });
+}
+
+
+    function formatarData(dataStr) {
+        if (!dataStr) return "";
+        const data = new Date(dataStr);
+        return data.toLocaleDateString("pt-BR");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+    carregarForuns();
+    carregarSelects();
+    document.getElementById("btnInserir").addEventListener("click", () => {
+    const novoForum = {
+        autor_id: document.getElementById("forumAutor").value,
+        categoria_id: document.getElementById("forumCategoria").value,
+        titulo: document.getElementById("forumTitulo").value,
+        data_postagem: document.getElementById("forumDataPostagem").value,
+        visualizacoes: parseInt(document.getElementById("forumVisualizacoes").value),
+        ultima_interacao: document.getElementById("forumUltimaInteracao").value,
+        quantidade_comentarios: 0
+    };
+    createForum(novoForum, carregarForuns);
+});
+
+document.getElementById("btnAlterar").addEventListener("click", () => {
+    const id = document.getElementById("forumId").value;
+    if (!id) return alert("Selecione um fórum para alterar.");
+
+    const forumAtualizado = {
+        autor_id: document.getElementById("forumAutor").value,
+        categoria_id: document.getElementById("forumCategoria").value,
+        titulo: document.getElementById("forumTitulo").value,
+        data_postagem: document.getElementById("forumDataPostagem").value,
+        visualizacoes: parseInt(document.getElementById("forumVisualizacoes").value),
+        ultima_interacao: document.getElementById("forumUltimaInteracao").value,
+        quantidade_comentarios: parseInt(document.getElementById("forumComentarios").value)
+    };
+    updateForum(id, forumAtualizado, carregarForuns);
+});
+
+document.getElementById("btnExcluir").addEventListener("click", () => {
+    const id = document.getElementById("forumId").value;
+    if (!id) return alert("Selecione um fórum para excluir.");
+
+    if (confirm("Tem certeza que deseja excluir este fórum?")) {
+        deleteForum(id, carregarForuns);
+    }
+});
+});
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<footer id="main-footer"></footer>
+<script src="/assets/js/searchbar.js"></script>
+<script src="https://kit.fontawesome.com/e9afc20198.js" crossorigin="anonymous"></script>
+</body>
+</html>
