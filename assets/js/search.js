@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://tiaw-synapso.onrender.com';
 
 let fuseNoticias, fuseForum;
 let todasNoticias = [], todosForum = [], categorias = [], comentariosNoticias = [], comentariosForum = [];

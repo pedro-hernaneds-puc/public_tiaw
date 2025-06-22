@@ -8,7 +8,7 @@ function embaralhar(array) {
 async function carregarDestaques() {
     let contador = 0;
     try {
-        const response = await fetch("http://localhost:3000/noticias");
+        const response = await fetch("https://tiaw-synapso.onrender.com/noticias");
         const noticias = await response.json();
 
         // Filtra apenas as notícias com destaque

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const API_URL = 'http://localhost:3000/usuarios';
+  const API_URL = 'https://tiaw-synapso.onrender.com/usuarios';
   const header = document.getElementById('main-header');
   const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente') || 'null');
 
@@ -165,8 +165,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let dados = [];
   try {
     const [noticias, foruns] = await Promise.all([
-      fetch('http://localhost:3000/noticias').then(r => r.json()),
-      fetch('http://localhost:3000/forum').then(r => r.json())
+      fetch('https://tiaw-synapso.onrender.com/noticias').then(r => r.json()),
+      fetch('https://tiaw-synapso.onrender.com/forum').then(r => r.json())
     ]);
     dados = [
       ...noticias.map(n => ({ tipo: 'noticia', titulo: n.titulo, id: n.id })),

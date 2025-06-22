@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000/noticias';
+const apiUrl = 'https://tiaw-synapso.onrender.com/noticias';
 
 function displayMessage(mensagem) {
     msg = document.getElementById('msg');

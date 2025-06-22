@@ -1,8 +1,8 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-const API_FORUM = '/forum';
-const API_COMENTARIOS = '/comentarios_forum';
+const API_FORUM = 'https://tiaw-synapso.onrender.com/forum';
+const API_COMENTARIOS = 'https://tiaw-synapso.onrender.com/comentarios_forum';
 
 const container = document.getElementById('detalhes-forum');
 const listaComentarios = document.getElementById('comentarios');

@@ -7,7 +7,7 @@ async function carregarForuns(dados, numeroDeDestaques){
         timeStyle: "short",
         hour12: false });
         
-        const comentariosResponse = await fetch(`http://localhost:3000/comentarios_forum?forum_id=${dados[i].id}`);
+        const comentariosResponse = await fetch(`https://tiaw-synapso.onrender.com/comentarios_forum?forum_id=${dados[i].id}`);
         const comentariosData = await comentariosResponse.json();
         const quantidadeComentarios = Array.isArray(comentariosData) ? comentariosData.length : 0;
 
@@ -16,7 +16,7 @@ async function carregarForuns(dados, numeroDeDestaques){
         // itemForum.className = `forum-thread`;
         const itemForum = document.createElement("a")
         itemForum.className = `forum-link`
-        itemForum.setAttribute("href", "http://localhost:3000/modulos/detalhes-forum.html?id="+ dados[i].id)
+        itemForum.setAttribute("href", "/modulos/detalhes-forum.html?id="+ dados[i].id)
         itemForum.innerHTML = `
         <div class = "forum-thread">            
             <div>${categoriaForum}</div>
@@ -31,7 +31,7 @@ async function carregarForuns(dados, numeroDeDestaques){
 
 
 async function fetchCategoria(categoria_id) {
-    const response = await fetch("http://localhost:3000/categorias/" + categoria_id);
+    const response = await fetch("https://tiaw-synapso.onrender.com/categorias/" + categoria_id);
         const data = await response.json();
         return data.nome;
 }

@@ -11,9 +11,9 @@
 
 
 // Página inicial de Login
-const LOGIN_URL = "/../../modulos/login/login.html";
-let RETURN_URL = "/../../modulos/login/index.html";
-const API_URL_2 = 'http://localhost:3000/usuarios';
+const LOGIN_URL = "/modulos/login/login.html";
+let RETURN_URL = "/modulos/login/index.html";
+const API_URL_2 = 'https://tiaw-synapso.onrender.com/usuarios';
 
 // Objeto para o banco de dados de usuários baseado em JSON
 var db_usuarios = {};

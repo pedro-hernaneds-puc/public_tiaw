@@ -1,5 +1,5 @@
-const apiForum = "/forum";
-const apiCategorias = "/categorias";
+const apiForum = "https://tiaw-synapso.onrender.com/forum";
+const apiCategorias = "https://tiaw-synapso.onrender.com/categorias";
 
 //funcao para obter foruns da database
 async function api() {

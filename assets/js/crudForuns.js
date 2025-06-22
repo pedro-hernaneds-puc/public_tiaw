@@ -1,4 +1,4 @@
-const apiUrl = "/forum";
+const apiUrl = "https://tiaw-synapso.onrender.com/forum";
 function readForum(processaDados, filtro){
     fetch(apiUrl + filtro)
     .then(response => response.json())

@@ -1,5 +1,5 @@
-const apiNoticia = "http://localhost:3000/noticias/";
-const apiCategorias = "http://localhost:3000/categorias/";
+const apiNoticia = "https://tiaw-synapso.onrender.com/noticias/";
+const apiCategorias = "https://tiaw-synapso.onrender.com/categorias/";
 
 //funcao para obter noticias da database
 async function api() {
